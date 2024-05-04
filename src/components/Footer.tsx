@@ -1,44 +1,42 @@
+import { type FilterValue } from '../type'
+import { Filters } from './Filters'
 
-import { FilterValue } from "../type"
-import { Filters } from "./Filters"
-
-interface Props{
-    activeCount: number,
-    completedCount : number,
-    filterSelected : FilterValue,
-    handleFilterChange: (filter: FilterValue) => void
-    onClearCompleted: () => void
+interface Props {
+  handleFilterChange: (filter: FilterValue) => void
+  activeCount: number
+  completedCount: number
+  onClearCompleted: () => void
+  filterSelected: FilterValue
 }
 
-export const Footer: React.FC<Props> = ({ 
-    activeCount = 0, 
-    completedCount = 0,
-    filterSelected,
-    handleFilterChange, 
-    onClearCompleted
+export const Footer: React.FC<Props> = ({
+  activeCount,
+  completedCount,
+  onClearCompleted,
+  filterSelected,
+  handleFilterChange
 }) => {
-    return(
-        <footer className="footer">
-            <span className="todo-count">
-                <strong>{activeCount}</strong> tareas pendientes
-            </span>
+  const singleActiveCount = activeCount === 1
+  const activeTodoWord = singleActiveCount ? 'tarea' : 'tareas'
 
-            <Filters
-                filterSelected={filterSelected}
-                onFilterChange={handleFilterChange}
-            />
+  return (
+    <footer className="footer">
 
-            {
-                completedCount > 0 && (
-                    <button
-                    className='clear-completed'
-                    onClick={onClearCompleted}
-                    >
-                        Borrar completados
-                    </button>
-                )
-            }
-        </footer>
-        
-    )
+      <span className="todo-count">
+        <strong>{activeCount}</strong> {activeTodoWord} pendiente{!singleActiveCount && 's'}
+      </span>
+
+      <Filters filterSelected={filterSelected} handleFilterChange={handleFilterChange} />
+
+      {
+        completedCount > 0 && (
+          <button
+            className="clear-completed"
+            onClick={onClearCompleted}>
+              Borrar completados
+          </button>
+        )
+      }
+    </footer>
+  )
 }
